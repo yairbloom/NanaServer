@@ -3,6 +3,19 @@ var mongoose    = require('mongoose');
 var bodyParser  = require('body-parser');
 var path        = require('path');
 var $           = require('jquery');
+const multer = require('multer');
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now())
+  }
+})
+
+var upload = multer({ storage: storage })
+
 
 //connect to db
 mongoose.connect('mongodb://localhost:27017/ajaxdemo',{useNewUrlParser:true})
@@ -28,6 +41,17 @@ app.use(express.static(path.join(__dirname+'/public')));
 app.get('/',(req,res)=>{
   res.redirect('/task/home');
 });
+
+app.post('/uploadfile', upload.single('myFile'), (req, res, next) => {
+  const file = req.file
+  if (!file) {
+    const error = new Error('Please upload a file')
+    error.httpStatusCode = 400
+    return next(error)
+
+  }
+  res.send(file)
+})
 
 //routes
 app.use('/task',require('./routes/taskroute'));

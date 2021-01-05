@@ -3,6 +3,9 @@ var mongoose = require('mongoose');
 var taskSchema = new mongoose.Schema({
     task:{
         type:String
+    },
+    Address:{
+        type:String
     }
 });
 

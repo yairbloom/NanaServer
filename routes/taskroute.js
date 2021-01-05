@@ -10,7 +10,8 @@ router.get('/home',(req,res)=>{
 
 router.post('/addtask',(req,res)=>{
           var taskk = new taskModel({
-              task:req.body.task
+              task:req.body.task,
+              Address:req.body.Address
           });
           taskModel.addTask(taskk,(err,taskData)=>{
               if(err){

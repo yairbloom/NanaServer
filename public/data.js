@@ -1,21 +1,23 @@
 $(document).ready(function(){
-    alert('application started');
+    //alert('application started');
 
     getdata();
 
     $('.addbtn').click(function(){
          var task = $("#task").val();
+         var Address = $("#Address").val();
        $.ajax({
            url:'/task/addtask',
            method:'post',
            dataType:'json',
-           data:{'task':task},
+           data:{'task':task,'Address':Address},
            success:function(response){
                if(response.msg=='success'){
             //    $("#task").remove();
-               alert('task added successfully');
+               //alert('task added successfully');
                getdata();
                $('#task').val('')
+               $('#Address').val('')
                }else{
                    alert('some error occurred try again');
                }
@@ -35,7 +37,7 @@ $(document).ready(function(){
             data:{'id':id},
             success:function(response){
                 if(response.msg=='success'){
-                    alert('data deleted');
+                    //alert('data deleted');
                     getdata();
                 }else{
                     alert('data not get deleted');
@@ -61,7 +63,7 @@ $(document).ready(function(){
                      $.each(response.data,function(index,data){
                          var url = url+data._id;
                          index+=1;
-            $('tbody').append("<tr class='taskrow'><td>"+ index +"</td><td>"+data.task+"</td><td>"+"<button class='del' value='"+data._id+"'>delete</button>"+"</td></tr>"); 
+            $('tbody').append("<tr class='taskrow'><td>"+ index +"</td><td>"+data.task+"</td><td>"+data.Address+"</td><td>"+"<button class='del' value='"+data._id+"'>delete</button>"+"</td></tr>"); 
                      });
                  }
                }

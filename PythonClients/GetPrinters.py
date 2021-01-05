@@ -2,7 +2,7 @@
 import requests 
   
 # api-endpoint 
-URL = "http://localhost:3000/task/gettask"
+URL = "http://localhost:3000/printers/GetPrinters"
   
 # defining a params dict for the parameters to be sent to the API 
   
@@ -15,5 +15,5 @@ data = r.json()
 
 
 for printer in data['data']:
-  print ('Printer :',printer['task'])
+  print ('Printer :',printer['Name'])
 

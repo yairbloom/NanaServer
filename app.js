@@ -39,7 +39,7 @@ app.use(express.static(path.join(__dirname+'/public')));
 
 //default page load
 app.get('/',(req,res)=>{
-  res.redirect('/task/home');
+  res.redirect('/printers/home');
 });
 
 app.post('/uploadfile', upload.single('myFile'), (req, res, next) => {
@@ -54,7 +54,7 @@ app.post('/uploadfile', upload.single('myFile'), (req, res, next) => {
 })
 
 //routes
-app.use('/task',require('./routes/taskroute'));
+app.use('/printers',require('./routes/PrintersRoute'));
 
 //assign port
 var port  = process.env.PORT || 3000;

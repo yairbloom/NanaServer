@@ -4,20 +4,16 @@ $(document).ready(function(){
     getdata();
 
     $('.addbtn').click(function(){
-         var task = $("#task").val();
-         var Address = $("#Address").val();
+         var PrinterName = $("#PrinterName").val();
        $.ajax({
-           url:'/task/addtask',
+           url:'/printers/AddPrinter',
            method:'post',
            dataType:'json',
-           data:{'task':task,'Address':Address},
+           data:{'PrinterName':PrinterName},
            success:function(response){
                if(response.msg=='success'){
-            //    $("#task").remove();
-               //alert('task added successfully');
                getdata();
-               $('#task').val('')
-               $('#Address').val('')
+               $('#PrinterName').val('')
                }else{
                    alert('some error occurred try again');
                }
@@ -31,7 +27,7 @@ $(document).ready(function(){
         var id = $(this).parent().find('button.del').val();
         // alert('delte',id)
         $.ajax({
-            url:'/task/removetask',
+            url:'/printers/RemovePrinter',
             method:'delete',
             dataType:'json',
             data:{'id':id},
@@ -50,12 +46,12 @@ $(document).ready(function(){
     });
     function getdata(){
         $.ajax({
-            url:'/task/gettask',
+            url:'/printers/GetPrinters',
             method:'get',
             dataType:'json',
             success:function(response){
                  if(response.msg=='success'){
-                     $('tr.taskrow').remove()
+                     $('tr.printerrow').remove()
                      if(response.data==undefined || response.data==null || response.data==''){
                          $('.tblData').hide();
                      }else{
@@ -63,7 +59,7 @@ $(document).ready(function(){
                      $.each(response.data,function(index,data){
                          var url = url+data._id;
                          index+=1;
-            $('tbody').append("<tr class='taskrow'><td>"+ index +"</td><td>"+data.task+"</td><td>"+data.Address+"</td><td>"+"<button class='del' value='"+data._id+"'>delete</button>"+"</td></tr>"); 
+            $('tbody').append("<tr class='printerrow'><td>"+ index +"</td><td>"+data.Name+"</td><td>"+"<button class='del' value='"+data._id+"'>delete</button>"+"</td></tr>"); 
                      });
                  }
                }

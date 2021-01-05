@@ -1,5 +1,5 @@
 var express    = require('express');
-var taskModel  = require('../models/task');
+var PrinterModel  = require('../models/PrintersModel.js');
 
 var router = express.Router();
 
@@ -8,12 +8,11 @@ router.get('/home',(req,res)=>{
 });
 
 
-router.post('/addtask',(req,res)=>{
-          var taskk = new taskModel({
-              task:req.body.task,
-              Address:req.body.Address
+router.post('/AddPrinter',(req,res)=>{
+          var PM = new PrinterModel({
+              Name:req.body.PrinterName
           });
-          taskModel.addTask(taskk,(err,taskData)=>{
+          PrinterModel.addPrinter(PM,(err,PrinterData)=>{
               if(err){
                   res.json({msg:'error'});
               }else{
@@ -22,18 +21,18 @@ router.post('/addtask',(req,res)=>{
           });
 });
 
-router.get('/gettask',(req,res)=>{
-  taskModel.getTask((err,taskData)=>{
+router.get('/GetPrinters',(req,res)=>{
+  PrinterModel.getPrinter((err,PrinterData)=>{
           if(err){
               res.json({msg:'error'});
           }else{
-              res.json({msg:'success',data:taskData});
+              res.json({msg:'success',data:PrinterData});
           }
   });
 });
 
-router.delete('/removetask',(req,res)=>{
-      taskModel.removeTask(req.body.id,(err,taskData)=>{
+router.delete('/RemovePrinter',(req,res)=>{
+      PrinterModel.removePrinter(req.body.id,(err,PrinterData)=>{
             if(err){
                 res.json({msg:'error'});
             }else{

@@ -29,7 +29,6 @@ var app = express();
 app.set('view engine','ejs');
 
 //fetch data from the request
-app.use(bodyParser.urlencoded({extended:false}));
 
 //set the path of the jquery file to be used from the node_module jquery package
 app.use('/jquery',express.static(path.join(__dirname+'/node_modules/jquery/dist/')));
@@ -42,16 +41,10 @@ app.get('/',(req,res)=>{
   res.redirect('/printers/home');
 });
 
-app.post('/uploadfile', upload.single('myFile'), (req, res, next) => {
-  const file = req.file
-  if (!file) {
-    const error = new Error('Please upload a file')
-    error.httpStatusCode = 400
-    return next(error)
 
-  }
-  res.send(file)
-})
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
+
 
 //routes
 app.use('/printers',require('./routes/PrintersRoute'));

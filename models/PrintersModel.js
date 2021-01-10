@@ -2,8 +2,10 @@ var mongoose = require('mongoose');
 
 var PrintersSchema = new mongoose.Schema({
     Name:{
-        type:String
-    }
+        type:String,
+        unique: true
+    },
+    Jobs:[{JobName : String , JobPath : String}]
 });
 
 var PrinterModel =  module.exports = mongoose.model('printers',PrintersSchema);
@@ -14,7 +16,7 @@ module.exports.addPrinter = (Printers,cb)=>{
                 cb(err,null);
             }else{
                 cb(null,PrinterData);
-            }
+                }
     });
 }
 
@@ -37,3 +39,19 @@ module.exports.removePrinter = (id,cb)=>{
             }
     });
 }
+
+module.exports.addJobToPrinter = (PrinterName, JobName,cb)=>{
+  PrinterModel.update(
+      { "Name": PrinterName },
+      { "$push": { "Jobs": { "JobName": "abc", "JobPath": JobName } } },(err)=>{
+      if(err){
+        cb(err);
+      }else{
+        cb(null);
+      }
+      })
+
+}
+
+
+

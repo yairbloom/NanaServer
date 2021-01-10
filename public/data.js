@@ -15,7 +15,8 @@ $(document).ready(function(){
                getdata();
                $('#PrinterName').val('')
                }else{
-                   alert('some error occurred try again');
+                   //alert('server error ' + response.json());   
+                   alert('server error '+ response.msg);   
                }
            },
            error:function(response){
@@ -40,7 +41,7 @@ $(document).ready(function(){
                 }
             },
             error:function(response){
-                     alert('server error')   
+                     alert('server error ' + response.json());   
             }
         });
     });
@@ -65,7 +66,7 @@ $(document).ready(function(){
                }
             },
             error:function(response){
-                alert('server error');
+                alert('server error ' + response.json());   
             }
         });
     }

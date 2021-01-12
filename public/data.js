@@ -60,7 +60,8 @@ $(document).ready(function(){
                      $.each(response.data,function(index,data){
                          var url = url+data._id;
                          index+=1;
-            $('tbody').append("<tr class='printerrow'><td>"+ index +"</td><td>"+data.Name+"</td><td>"+"<button class='del' value='"+data._id+"'>delete</button>"+"</td></tr>"); 
+                         var JobName = data.Jobs.length > 0 ? data.Jobs[0].JobName :  "==="; 
+            $('tbody').append("<tr class='printerrow'><td>"+ index +"</td><td>"+data.Name+"</td><td>"+JobName+"</td><td>"+"<button class='del' value='"+data._id+"'>delete</button>"+"</td></tr>"); 
                      });
                  }
                }

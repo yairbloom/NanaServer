@@ -24,15 +24,35 @@ router.get('/home',(req,res)=>{
  res.render('demo');
 });
 
+router.get('/GetJob',(req,res)=>{
+    //var PrinterName = req.param("PrinterName");
+    var PrinterName = req.query.PrinterName;
+    console.log("PrinterName: "+PrinterName) 
+    PrinterModel.getOnePrinter(PrinterName , (err,PrinterData)=>{
+          if(err){
+              console.log("Error= " + err);
+              res.sendStatus( 500 ); //500 Internal Server Error
+          }else{
+              if (PrinterData && PrinterData.Jobs.length > 0 ) {
+                 console.log("JobPath= "+PrinterData.Jobs[0].JobPath);
+                 res.download(PrinterData.Jobs[0].JobPath);
+              }else{
+                res.sendStatus( 204 ); //204 NO CONTENT
+              }
+          }
+  });
+
+ });
+
 router.post('/NewJob', upload.single('myFile'), (req, res, next) => {
   const file = req.file
-  console.log(req.body.PrinterName);
+  console.log(req.body.JobName);
   if (!file) {
     const error = new Error('Please upload a file')
     error.httpStatusCode = 400
     return next(error)
   }
-  PrinterModel.addJobToPrinter(req.body.PrinterName,file.path,(err )=>{
+  PrinterModel.addJobToPrinter(req.body.PrinterName , req.body.JobName , file.path,(err )=>{
               if(err){
                   console.log(err);
               }else{

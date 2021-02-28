@@ -26,15 +26,20 @@ router.get('/home',(req,res)=>{
 
 router.get('/GetJob',(req,res)=>{
     //var PrinterName = req.param("PrinterName");
-    var PrinterName = req.query.PrinterName;
-    console.log("PrinterName: "+PrinterName) 
-    PrinterModel.getOnePrinter(PrinterName , (err,PrinterData)=>{
+    var RemoteIp = req.headers['x-forwarded-for'] ||
+             req.connection.remoteAddress ||
+             req.socket.remoteAddress ||
+             req.connection.socket.remoteAddress;
+    RemoteIp = RemoteIp.split(':').slice(-1); //in case the ip returned in a format: "::ffff:146.xxx.xxx.xxx"
+
+    console.log("RemoteIp: "+RemoteIp) 
+    PrinterModel.getOnePrinter(RemoteIp , (err,PrinterData)=>{
           if(err){
               console.log("Error= " + err);
               res.sendStatus( 500 ); //500 Internal Server Error
           }else{
               if (PrinterData && PrinterData.Jobs.length > 0 ) {
-                 console.log("JobPath= "+PrinterData.Jobs[0].JobPath);
+                 console.log("Sending Job "+PrinterData.Jobs[0].JobPath + " To " + RemoteIp);
                  res.download(PrinterData.Jobs[0].JobPath);
               }else{
                 res.sendStatus( 204 ); //204 NO CONTENT
@@ -66,7 +71,8 @@ router.post('/NewJob', upload.single('myFile'), (req, res, next) => {
 
 router.post('/AddPrinter',(req,res)=>{
           var PM = new PrinterModel({
-              Name:req.body.PrinterName
+              Name:req.body.PrinterName,
+              Address:req.body.Address
           });
           PrinterModel.addPrinter(PM,(err,PrinterData)=>{
               if(err){

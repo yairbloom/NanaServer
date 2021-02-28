@@ -5,15 +5,17 @@ $(document).ready(function(){
 
     $('.addbtn').click(function(){
          var PrinterName = $("#PrinterName").val();
+         var Address = $("#Address").val();
        $.ajax({
            url:'/printers/AddPrinter',
            method:'post',
            dataType:'json',
-           data:{'PrinterName':PrinterName},
+           data:{'PrinterName':PrinterName,'Address':Address},
            success:function(response){
                if(response.msg=='success'){
                getdata();
                $('#PrinterName').val('')
+               $('#Address').val('')
                }else{
                    //alert('server error ' + response.json());   
                    alert('server error '+ response.msg);   
@@ -60,8 +62,9 @@ $(document).ready(function(){
                      $.each(response.data,function(index,data){
                          var url = url+data._id;
                          index+=1;
-                         var JobName = data.Jobs.length > 0 ? data.Jobs[0].JobName :  "==="; 
-            $('tbody').append("<tr class='printerrow'><td>"+ index +"</td><td>"+data.Name+"</td><td>"+JobName+"</td><td>"+"<button class='del' value='"+data._id+"'>delete</button>"+"</td></tr>"); 
+                         var JobName = data.Jobs.length > 0 ? data.Jobs[0].JobName :  "===";
+                         var PrinterAddress = data.Address ? data.Address :  "==="; 
+            $('tbody').append("<tr class='printerrow'><td>"+ index +"</td><td>"+data.Name+"</td><td>"+PrinterAddress+"</td><td>"+JobName+"</td><td>"+"<button class='del' value='"+data._id+"'>delete</button>"+"</td></tr>"); 
                      });
                  }
                }

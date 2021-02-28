@@ -4,8 +4,8 @@ import json
 from datetime import datetime
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
-FilePath='/tmp/UploadTest.zip'
-FilePath='/tmp/OneDrive_2020-01-31.zip'
+FilePath='/home/yair/NODE_JS/NanoPrinters/PCBJS/aiffelT.pcbjs'
+#FilePath='/tmp/OneDrive_2020-01-31.zip'
 
 # api-endpoint 
 GetPrintersUrl = "http://localhost:3000/printers/GetPrinters"

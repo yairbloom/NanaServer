@@ -5,6 +5,10 @@ var PrintersSchema = new mongoose.Schema({
         type:String,
         unique: true
     },
+    Address:{
+        type:String
+
+    },
     Jobs:[{JobName : String , JobPath : String}]
 });
 
@@ -30,8 +34,8 @@ module.exports.getPrinter = (cb)=>{
     });
 }
 
-module.exports.getOnePrinter = (PrinterName , cb)=>{
-    PrinterModel.findOne({'Name':PrinterName},(err,PrinterData)=>{
+module.exports.getOnePrinter = (PrinterAddress , cb)=>{
+    PrinterModel.findOne({'Address':PrinterAddress},(err,PrinterData)=>{
           if(err){
               cb(err,null);
           }else{

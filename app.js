@@ -18,7 +18,7 @@ var upload = multer({ storage: storage })
 
 
 //connect to db
-mongoose.connect('mongodb://localhost:27017/ajaxdemo',{useNewUrlParser:true})
+mongoose.connect('mongodb://localhost:27017/NanoDB',{useNewUrlParser:true})
 .then(()=>console.log('connected to db'))
 .catch((err)=>console.log('connection error',err))
 

@@ -24,16 +24,21 @@ router.get('/home',(req,res)=>{
  res.render('demo');
 });
 
-router.get('/GetJob',(req,res)=>{
-    //var PrinterName = req.param("PrinterName");
+function GetAddressFromReq(req) {
     var RemoteIp = req.headers['x-forwarded-for'] ||
              req.connection.remoteAddress ||
              req.socket.remoteAddress ||
              req.connection.socket.remoteAddress;
     RemoteIp = RemoteIp.split(':').slice(-1); //in case the ip returned in a format: "::ffff:146.xxx.xxx.xxx"
 
-    console.log("RemoteIp: "+RemoteIp) 
-    PrinterModel.getOnePrinter(RemoteIp , (err,PrinterData)=>{
+    console.log("--- RemoteIp: "+RemoteIp) 
+    return RemoteIp;
+}
+
+
+router.get('/GetJob',(req,res)=>{
+       var RemoteIp = GetAddressFromReq(req); 
+       PrinterModel.getOnePrinter(RemoteIp , (err,PrinterData)=>{
           if(err){
               console.log("Error= " + err);
               res.sendStatus( 500 ); //500 Internal Server Error
@@ -48,6 +53,33 @@ router.get('/GetJob',(req,res)=>{
   });
 
  });
+
+router.get('/StartJob',(req,res)=>{
+       var RemoteIp = GetAddressFromReq(req); 
+       PrinterModel.StartJob(RemoteIp  ,(err,PrinterData)=>{
+          if(err){
+              console.log("Error= " + err);
+              res.sendStatus( 500 ); //500 Internal Server Error
+          }else{
+                  res.sendStatus( 200 );
+          }
+  });
+
+ });
+
+router.get(['/NotifyJobActive','/CancelJob'],(req,res)=>{
+       var RemoteIp = GetAddressFromReq(req); 
+       PrinterModel.RemoveFirstJob(RemoteIp  ,(err,PrinterData)=>{
+          if(err){
+              console.log("Error= " + err);
+              res.sendStatus( 500 ); //500 Internal Server Error
+          }else{
+                  res.sendStatus( 200 );
+          }
+  });
+
+ });
+
 
 router.post('/NewJob', upload.single('myFile'), (req, res, next) => {
   const file = req.file

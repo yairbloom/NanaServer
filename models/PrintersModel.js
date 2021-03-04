@@ -9,7 +9,13 @@ var PrintersSchema = new mongoose.Schema({
         type:String
 
     },
-    Jobs:[{JobName : String , JobPath : String}]
+    Jobs:[{JobName : String , 
+           JobPath : String,
+           JobStatus: {
+              type: String,
+              enum : ['New','Started','Finish','Failed'],
+              default: 'New'
+    }}]
 });
 
 var PrinterModel =  module.exports = mongoose.model('printers',PrintersSchema);
@@ -59,6 +65,33 @@ module.exports.addJobToPrinter = (PrinterName, JobName , JobPath ,cb)=>{
   PrinterModel.update(
       { "Name": PrinterName },
       { "$push": { "Jobs": { "JobName": JobName, "JobPath": JobPath } } },(err)=>{
+      if(err){
+        cb(err);
+      }else{
+        cb(null);
+      }
+      })
+
+}
+
+module.exports.RemoveFirstJob = (PrinterAddress, cb)=>{
+  PrinterModel.updateOne(
+      { "Address": PrinterAddress },
+      { "$pop": { "Jobs":  -1} },(err)=>{
+      if(err){
+        cb(err);
+      }else{
+        cb(null);
+      }
+      })
+
+}
+
+
+module.exports.StartJob = (PrinterAddress, cb)=>{
+      const query = { "Address": PrinterAddress, "Jobs.JobStatus": "New" };
+      const updateDocument = {$set: { "Jobs.$.JobStatus": "Started" }};
+      PrinterModel.updateOne(query , updateDocument ,(err)=>{
       if(err){
         cb(err);
       }else{

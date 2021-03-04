@@ -3,6 +3,8 @@ var mongoose    = require('mongoose');
 var bodyParser  = require('body-parser');
 var path        = require('path');
 var $           = require('jquery');
+var logger = require('morgan')
+
 const multer = require('multer');
 
 var storage = multer.diskStorage({
@@ -35,6 +37,9 @@ app.use('/jquery',express.static(path.join(__dirname+'/node_modules/jquery/dist/
 
 //set static folder(public) path
 app.use(express.static(path.join(__dirname+'/public')));
+
+app.use(logger('short'))
+
 
 //default page load
 app.get('/',(req,res)=>{

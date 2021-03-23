@@ -62,8 +62,14 @@ module.exports.removePrinter = (id,cb)=>{
 }
 
 module.exports.addJobToPrinter = (PrinterName, JobName , JobPath ,cb)=>{
-  PrinterModel.update(
-      { "Name": PrinterName },
+  var filter=null;
+  if (PrinterName)
+  {
+    filter={ "Name": PrinterName };
+  }
+
+  PrinterModel.updateMany(
+       filter,
       { "$push": { "Jobs": { "JobName": JobName, "JobPath": JobPath } } },(err)=>{
       if(err){
         cb(err);

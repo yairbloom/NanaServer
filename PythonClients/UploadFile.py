@@ -35,7 +35,7 @@ JobName = "{PrinterName}-Job{Date}".format(PrinterName=PrinterName,Date=datetime
 
 with open(FilePath , 'rb') as f:
     m = MultipartEncoder(fields={'myFile': (os.path.basename(FilePath), f, 'application/gzip') ,
-                         "PrinterName":PrinterName,
+                         #"PrinterName":PrinterName,
                          "JobName":JobName})
     headers = {'Content-Type': m.content_type}
     req = requests.post(NewJobUrl, data=m, headers=headers)

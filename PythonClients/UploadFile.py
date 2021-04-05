@@ -4,12 +4,15 @@ import json
 from datetime import datetime
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
-FilePath='/home/yair/NODE_JS/NanoPrinters/PCBJS/aiffelT.pcbjs'
+FilePath='/home/yair/NODE_JS/NanoPrinters/PCBJS/DC to DC up converter.pcbjc'
 #FilePath='/tmp/OneDrive_2020-01-31.zip'
 
 # api-endpoint 
-GetPrintersUrl = "http://localhost:3000/printers/GetPrinters"
-NewJobUrl = "http://localhost:3000/printers/NewJob"
+GetPrintersUrl = "http://10.100.102.27:3000/printers/GetPrinters"
+NewJobUrl = "http://10.100.102.27:3000/printers/NewJob"
+
+#GetPrintersUrl = "http://127.0.0.1:3000/printers/GetPrinters"
+#NewJobUrl = "http://127.0.0.1:3000/printers/NewJob"
   
 # defining a params dict for the parameters to be sent to the API 
   

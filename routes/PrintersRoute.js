@@ -7,7 +7,7 @@ var storage = multer.diskStorage({
     cb(null, 'uploads')
   },
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now())
+    cb(null, Date.now() + '-' + file.originalname)
   }
 })
 
@@ -35,16 +35,34 @@ function GetAddressFromReq(req) {
     return RemoteIp;
 }
 
-
-router.get('/GetJob',(req,res)=>{
-       var RemoteIp = GetAddressFromReq(req); 
-       PrinterModel.getOnePrinter(RemoteIp , (err,PrinterData)=>{
+router.get('/GetNextJobDetails',(req,res)=>{
+       var PrinterIdentifier = req.query.PrinterIdentifier;
+       console.log("--- PrinterIdentifier: "+PrinterIdentifier);
+       PrinterModel.getOnePrinter(PrinterIdentifier , (err,PrinterData)=>{
           if(err){
               console.log("Error= " + err);
               res.sendStatus( 500 ); //500 Internal Server Error
           }else{
               if (PrinterData && PrinterData.Jobs.length > 0 ) {
-                 console.log("Sending Job "+PrinterData.Jobs[0].JobPath + " To " + RemoteIp);
+                 res.jsonp(PrinterData.Jobs[0]);
+                 //res.sendStatus( 200 ); //204 NO CONTENT
+              }else{
+                res.sendStatus( 204 ); //204 NO CONTENT
+              }
+          }
+  });
+
+ });
+
+
+router.get('/GetJob',(req,res)=>{
+       var PrinterIdentifier = (req.body.PrinterIdentifier);
+       PrinterModel.getOnePrinter(PrinterIdentifier , (err,PrinterData)=>{
+          if(err){
+              console.log("Error= " + err);
+              res.sendStatus( 500 ); //500 Internal Server Error
+          }else{
+              if (PrinterData && PrinterData.Jobs.length > 0 ) {
                  res.download(PrinterData.Jobs[0].JobPath);
               }else{
                 res.sendStatus( 204 ); //204 NO CONTENT
@@ -55,8 +73,8 @@ router.get('/GetJob',(req,res)=>{
  });
 
 router.get('/StartJob',(req,res)=>{
-       var RemoteIp = GetAddressFromReq(req); 
-       PrinterModel.StartJob(RemoteIp  ,(err,PrinterData)=>{
+       var PrinterIdentifier = (req.body.PrinterIdentifier);
+       PrinterModel.StartJob(PrinterIdentifier  ,(err,PrinterData)=>{
           if(err){
               console.log("Error= " + err);
               res.sendStatus( 500 ); //500 Internal Server Error
@@ -68,8 +86,8 @@ router.get('/StartJob',(req,res)=>{
  });
 
 router.get(['/NotifyJobActive','/CancelJob'],(req,res)=>{
-       var RemoteIp = GetAddressFromReq(req); 
-       PrinterModel.RemoveFirstJob(RemoteIp  ,(err,PrinterData)=>{
+       var PrinterIdentifier = (req.body.PrinterIdentifier);
+       PrinterModel.RemoveFirstJob(PrinterIdentifier  ,(err,PrinterData)=>{
           if(err){
               console.log("Error= " + err);
               res.sendStatus( 500 ); //500 Internal Server Error

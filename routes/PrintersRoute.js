@@ -133,6 +133,13 @@ router.post('/AddPrinter',(req,res)=>{
           });
 });
 
+router.post('/UpdateJonMetadata',(req,res)=>{
+
+    console.log(request.body); 
+    res.json({msg:'success'});
+});
+
+
 router.get('/GetPrinters',(req,res)=>{
   PrinterModel.getPrinter((err,PrinterData)=>{
           if(err){

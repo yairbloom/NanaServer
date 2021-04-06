@@ -5,7 +5,7 @@ from datetime import datetime
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 FilePath='/home/yair/NODE_JS/NanoPrinters/PCBJS/DC to DC up converter.pcbjc'
-#FilePath='/tmp/OneDrive_2020-01-31.zip'
+#FilePath='/home/yair/NODE_JS/NanoPrinters/PCBJS/OLIMEX_.pcbjc'
 
 # api-endpoint 
 GetPrintersUrl = "http://10.100.102.27:3000/printers/GetPrinters"

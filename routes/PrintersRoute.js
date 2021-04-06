@@ -56,7 +56,7 @@ router.get('/GetNextJobDetails',(req,res)=>{
 
 
 router.get('/GetJob',(req,res)=>{
-       var PrinterIdentifier = (req.body.PrinterIdentifier);
+       var PrinterIdentifier = (req.query.PrinterIdentifier);
        PrinterModel.getOnePrinter(PrinterIdentifier , (err,PrinterData)=>{
           if(err){
               console.log("Error= " + err);
@@ -73,7 +73,7 @@ router.get('/GetJob',(req,res)=>{
  });
 
 router.get('/StartJob',(req,res)=>{
-       var PrinterIdentifier = (req.body.PrinterIdentifier);
+       var PrinterIdentifier = (req.query.PrinterIdentifier);
        PrinterModel.StartJob(PrinterIdentifier  ,(err,PrinterData)=>{
           if(err){
               console.log("Error= " + err);
@@ -86,7 +86,7 @@ router.get('/StartJob',(req,res)=>{
  });
 
 router.get(['/NotifyJobActive','/CancelJob'],(req,res)=>{
-       var PrinterIdentifier = (req.body.PrinterIdentifier);
+       var PrinterIdentifier = (req.query.PrinterIdentifier);
        PrinterModel.RemoveFirstJob(PrinterIdentifier  ,(err,PrinterData)=>{
           if(err){
               console.log("Error= " + err);

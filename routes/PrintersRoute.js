@@ -135,7 +135,7 @@ router.post('/AddPrinter',(req,res)=>{
 
 router.post('/UpdateJonMetadata',(req,res)=>{
 
-    console.log(request.body); 
+    console.log(req.body); 
     res.json({msg:'success'});
 });
 

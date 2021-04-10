@@ -133,7 +133,7 @@ router.post('/AddPrinter',(req,res)=>{
           });
 });
 
-router.post('/UpdateJonMetadata',(req,res)=>{
+router.post('/UpdateJobMetadata',(req,res)=>{
 
     console.log(req.body); 
     res.json({msg:'success'});

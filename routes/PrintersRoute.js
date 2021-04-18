@@ -136,7 +136,15 @@ router.post('/AddPrinter',(req,res)=>{
 router.post('/UpdateJobMetadata',(req,res)=>{
 
     console.log(req.body); 
-    res.json({msg:'success'});
+    PrinterModel.UpdateJobMetaData(req.body.ServerJobId , JSON.stringify(req.body),(err,PrinterData)=>{
+        if(err){
+          console.log("Error= " + err);
+          res.sendStatus( 500 ); //500 Internal Server Error
+        }else{
+          res.sendStatus( 200 );
+        }
+      });
+
 });
 
 

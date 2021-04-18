@@ -11,6 +11,7 @@ var PrintersSchema = new mongoose.Schema({
     },
     Jobs:[{JobName : String , 
            JobPath : String,
+           JobMetaData : String,
            JobStatus: {
               type: String,
               enum : ['New','Started','Finish','Failed'],
@@ -106,6 +107,21 @@ module.exports.StartJob = (PrinterAddress, cb)=>{
       })
 
 }
+
+module.exports.UpdateJobMetaData = (JobId, JobMetaData, cb)=>{
+      const query = { "Jobs._id" : JobId};
+      const updateDocument = {$set: { "Jobs.$.JobMetaData": JobMetaData }};
+      const options = { upsert: true };
+      PrinterModel.updateOne(query , updateDocument ,options , (err)=>{
+      if(err){
+        cb(err);
+      }else{
+        cb(null);
+      }
+      })
+
+}
+
 
 
 

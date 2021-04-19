@@ -41,6 +41,34 @@ module.exports.getPrinter = (cb)=>{
     });
 }
 
+module.exports.GetNextJobDetails = (PrinterAddress , cb)=>{
+
+  const query = { "Address": PrinterAddress};
+  const projection = {Jobs:{ $elemMatch: { "JobStatus" : "New" }}};
+  PrinterModel.findOne(query,projection , (err,PrinterData)=>{
+    if(err){
+      cb(err,null);
+    }else{
+      cb(null,PrinterData);
+    }
+});
+}
+
+module.exports.GetJobInfo = (PrinterAddress, JobId, cb)=>{
+
+  const query = { "Address": PrinterAddress};
+  const projection = {Jobs:{ $elemMatch: { "_id" : JobId }}};
+  PrinterModel.findOne(query,projection , (err,PrinterData)=>{
+    if(err){
+      cb(err,null);
+    }else{
+      cb(null,PrinterData);
+    }
+});
+}
+
+
+
 module.exports.getOnePrinter = (PrinterAddress , cb)=>{
     PrinterModel.findOne({'Address':PrinterAddress},(err,PrinterData)=>{
           if(err){
@@ -95,18 +123,20 @@ module.exports.RemoveFirstJob = (PrinterAddress, cb)=>{
 }
 
 
-module.exports.StartJob = (PrinterAddress, cb)=>{
-      const query = { "Address": PrinterAddress, "Jobs.JobStatus": "New" };
-      const updateDocument = {$set: { "Jobs.$.JobStatus": "Started" }};
-      PrinterModel.updateOne(query , updateDocument ,(err)=>{
+module.exports.ChangeJobStatus = (PrinterAddress, JobId , JobStatus , cb)=>{
+  const query = { "Address": PrinterAddress, "Jobs._id" : JobId};
+  const updateDocument = {$set: { "Jobs.$.JobStatus": JobStatus }};
+  const options = { upsert: true };
+  PrinterModel.updateOne(query , updateDocument ,options , (err)=>{
       if(err){
         cb(err);
       }else{
         cb(null);
       }
-      })
+    })
 
 }
+
 
 module.exports.UpdateJobMetaData = (JobId, JobMetaData, cb)=>{
       const query = { "Jobs._id" : JobId};

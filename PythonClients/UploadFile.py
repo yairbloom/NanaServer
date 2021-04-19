@@ -11,8 +11,8 @@ FilePath='/home/yair/NODE_JS/NanoPrinters/PCBJS/DC to DC up converter.pcbjc'
 GetPrintersUrl = "http://10.100.102.27:3000/printers/GetPrinters"
 NewJobUrl = "http://10.100.102.27:3000/printers/NewJob"
 
-#GetPrintersUrl = "http://127.0.0.1:3000/printers/GetPrinters"
-#NewJobUrl = "http://127.0.0.1:3000/printers/NewJob"
+GetPrintersUrl = "http://127.0.0.1:3000/printers/GetPrinters"
+NewJobUrl = "http://127.0.0.1:3000/printers/NewJob"
   
 # defining a params dict for the parameters to be sent to the API 
   

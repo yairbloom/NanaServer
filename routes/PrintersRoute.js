@@ -38,14 +38,31 @@ function GetAddressFromReq(req) {
 router.get('/GetNextJobDetails',(req,res)=>{
        var PrinterIdentifier = req.query.PrinterIdentifier;
        console.log("--- PrinterIdentifier: "+PrinterIdentifier);
-       PrinterModel.getOnePrinter(PrinterIdentifier , (err,PrinterData)=>{
+       PrinterModel.GetNextJobDetails(PrinterIdentifier , (err,PrinterData)=>{
           if(err){
               console.log("Error= " + err);
               res.sendStatus( 500 ); //500 Internal Server Error
           }else{
               if (PrinterData && PrinterData.Jobs.length > 0 ) {
                  res.jsonp(PrinterData.Jobs[0]);
-                 //res.sendStatus( 200 ); //204 NO CONTENT
+              }else{
+                res.sendStatus( 204 ); //204 NO CONTENT
+              }
+          }
+  });
+
+ });
+
+router.get('/GetJobInfo',(req,res)=>{
+       var PrinterIdentifier = req.query.PrinterIdentifier;
+       var JobId = (req.query.JobId);
+       PrinterModel.GetJobInfo(PrinterIdentifier, JobId, (err,PrinterData)=>{
+          if(err){
+              console.log("Error= " + err);
+              res.sendStatus( 500 ); //500 Internal Server Error
+          }else{
+              if (PrinterData && PrinterData.Jobs.length > 0 ) {
+                 res.jsonp(PrinterData.Jobs[0]);
               }else{
                 res.sendStatus( 204 ); //204 NO CONTENT
               }
@@ -55,9 +72,11 @@ router.get('/GetNextJobDetails',(req,res)=>{
  });
 
 
+
 router.get('/GetJob',(req,res)=>{
        var PrinterIdentifier = (req.query.PrinterIdentifier);
-       PrinterModel.getOnePrinter(PrinterIdentifier , (err,PrinterData)=>{
+       var JobId = (req.query.JobId);
+       PrinterModel.GetJobInfo(PrinterIdentifier, JobId, (err,PrinterData)=>{
           if(err){
               console.log("Error= " + err);
               res.sendStatus( 500 ); //500 Internal Server Error
@@ -87,7 +106,10 @@ router.get('/StartJob',(req,res)=>{
 
 router.get(['/NotifyJobActive','/CancelJob'],(req,res)=>{
        var PrinterIdentifier = (req.query.PrinterIdentifier);
-       PrinterModel.RemoveFirstJob(PrinterIdentifier  ,(err,PrinterData)=>{
+       var JobId = (req.query.JobId);
+       console.log("PrinterIdentifier= " + PrinterIdentifier);
+       console.log("JobId= " + JobId);
+       PrinterModel.ChangeJobStatus(PrinterIdentifier, JobId , "Started"  ,(err,PrinterData)=>{
           if(err){
               console.log("Error= " + err);
               res.sendStatus( 500 ); //500 Internal Server Error

@@ -158,7 +158,7 @@ router.post('/AddPrinter',(req,res)=>{
 router.get('/UpdateJobMetadata',(req,res)=>{
 
     console.log(req.query.ServerJobId); 
-    console.log(req.query["PCB::PrintTimeInHours"]); 
+    console.log(req.query["PCB:PrintTimeInHours"]); 
     /*
     for (var propName in req.query) 
     {
@@ -167,7 +167,7 @@ router.get('/UpdateJobMetadata',(req,res)=>{
       }
     }
     */
-    PrinterModel.UpdateJobMetaData(req.query.ServerJobId , req.query["PCB::PrintTimeInHours"] ,(err,PrinterData)=>{
+    PrinterModel.UpdateJobMetaData(req.query.ServerJobId , req.query["PCB:PrintTimeInHours"] ,(err,PrinterData)=>{
         if(err){
           console.log("Error= " + err);
           res.sendStatus( 500 ); //500 Internal Server Error

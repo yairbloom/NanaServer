@@ -129,14 +129,14 @@ router.post('/NewJob', upload.single('myFile'), (req, res, next) => {
     error.httpStatusCode = 400
     return next(error)
   }
-  PrinterModel.addJobToPrinter(req.body.PrinterName , req.body.JobName , file.path,(err )=>{
+  PrinterModel.addJobToPrinter(req.body.PrinterName , req.body.JobName , file.path,(err , doc)=>{
               if(err){
                   console.log(err);
+                  res.json({msg:'error'});
               }else{
-                  console.log('success');
+                  res.json(doc);
               }
           });
-  res.send(file)
 
 }) 
 

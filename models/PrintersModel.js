@@ -97,13 +97,13 @@ module.exports.addJobToPrinter = (PrinterName, JobName , JobPath ,cb)=>{
     filter={ "Name": PrinterName };
   }
 
-  PrinterModel.updateMany(
+  PrinterModel.findOneAndUpdate(
        filter,
-      { "$push": { "Jobs": { "JobName": JobName, "JobPath": JobPath } } },(err)=>{
+      { "$push": { "Jobs": { "JobName": JobName, "JobPath": JobPath } } },{ "new": true },(err , Printer)=>{
       if(err){
-        cb(err);
+        cb(err , null);
       }else{
-        cb(null);
+        cb(null , Printer.Jobs[Printer.Jobs.length -1]);
       }
       })
 

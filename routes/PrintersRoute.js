@@ -155,6 +155,15 @@ router.post('/AddPrinter',(req,res)=>{
           });
 });
 
+
+
+router.post('/UpdateJobMetadata',(req,res)=>{
+
+    console.log(req.body); 
+    var info = JSON.parse(body)
+    console.log(info);
+})
+
 router.get('/UpdateJobMetadata',(req,res)=>{
 
     console.log(req.query.ServerJobId); 
